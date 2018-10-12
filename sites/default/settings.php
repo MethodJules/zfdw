@@ -249,7 +249,7 @@ $databases = array (
   array (
     'default' => 
     array (
-      'database' => 'uhiportal',
+      'database' => 'zfdw',
       'username' => 'root',
       'password' => '',
       'host' => 'localhost',
