@@ -147,7 +147,7 @@ var {
 }
 
 button {
-	background-color: #e3001b;
+	background-color: #0099BE;
 	border: 0;
 	padding: .5rem 1rem;
 	margin: 1rem 1rem 1rem 0;
@@ -561,13 +561,13 @@ a:visited {
 
 a:active,
 a.active {
-	color: #e3001b;
+	color: #0099BE;
 	text-decoration: none;
 }
 
 a:hover,
 a:focus {
-  color: #e3001b;
+  color: #0099BE;
   text-decoration: none;
 }
 
@@ -660,7 +660,7 @@ a:focus {
 .nav ul.menu li.leaf  > a:active {
 	line-height: 3em;
 	color: #e7e7e7; 
-	background-color: #e3001b;
+	background-color: #0099BE;
 }
 	
 .nav ul li > a,
@@ -713,7 +713,7 @@ a:focus {
 
 #sidr-0-button {
 	font-size: 1rem;
-	background-color: #e3001b;
+	background-color: #0099BE;
 	color: #fff;
 	padding: 1rem;
 	float: left;
@@ -1570,19 +1570,19 @@ ul.action-links li {}
 #block-system-user-menu li a:hover,
 #block-user-login li a:hover {
 	text-decoration: none;
-	background-color: #e3001b;
+	background-color: #0099BE;
 	}
 	
 #block-system-user-menu .form-submit,
 #block-user-login .form-submit {
 	width: 100%;
 	margin-left: 0px;
-	background-color: #e3001b;
+	background-color: #0099BE;
 	}
 	
 #block-system-user-menu .form-submit:hover,
 #block-user-login .form-submit:hover {
-	background-color: #e3001b;
+	background-color: #0099BE;
 	}
 
 /*
@@ -1901,7 +1901,7 @@ table h3 {
 }
 
 table h2 {
-	border-bottom: solid 2px #e3001b;
+	border-bottom: solid 2px #0099BE;
 	}
 
 table.sticky-header {
@@ -2339,7 +2339,7 @@ nav#block-system-main-menu ul.menu ul ul {
 	top: -4rem;
 	padding: 1rem 4rem;
 	border:0;
-	background-color: #e3001b;
+	background-color: #0099BE;
 	color: #fff;
 	font-weight: bold;
 }
@@ -2565,7 +2565,7 @@ nav#block-system-main-menu ul.menu ul ul {
  
  .background_wrap {
 		padding: 3%;
-		background-color: #e3001b;
+		background-color: #0099BE;
 	}
 	
  .email_wrap {
@@ -2616,7 +2616,7 @@ nav#block-system-main-menu ul.menu ul ul {
 .email_wrap .content {
 	margin: 1rem;
 	margin-top: 2rem;
-	border-top: 5px solid #e3001b;
+	border-top: 5px solid #0099BE;
 	}
 	
 .email_wrap #footer {
