@@ -973,7 +973,7 @@ function morphsearch_apachesolr_index_document_build_node(ApacheSolrDocument $do
       $array_tids = array();
 
       // get IDs of all associated research results
-      $reference_node_ids = get_associated_search_result_ids($entity->nid, 'project');
+      $reference_node_ids = get_associated_search_result_ids($entity->nid, 'forschungsergebnisse');
 
       // get all taxonomy IDs of associated research results
       foreach ($reference_node_ids as $ref) {
@@ -981,9 +981,13 @@ function morphsearch_apachesolr_index_document_build_node(ApacheSolrDocument $do
       }
 
       // merge existing project taxonomy term ids with research result
+      //dsm($document);
       $existingTids = $document->getField('tid')['value'];
-      $array_tids = array_merge($array_tids, $existingTids);
-
+      try {
+        $array_tids = array_merge($array_tids, $existingTids);
+      } catch (Exception $e) {
+          watchdog_exception('type', $e);
+      }
       // add taxonomy IDs to solr document index
       $array_tids = array_unique($array_tids);
       $document->setField('tid', $array_tids);
