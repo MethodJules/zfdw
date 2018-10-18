@@ -1,0 +1,26 @@
+<?php
+
+function create_one_time_link_menu() {
+
+$items['one_time_link/create'] = array(
+	'page callback' => 'create_link',
+	'access arguments' => TRUE,
+	'title' => t('Create One Time Link'),
+	
+	
+);
+
+return $items;
+
+}
+
+function create_link() {
+	$url = one_time_login_short_link(
+		$account = user_load(32), //TODO parameterisieren
+		$expire = '+2 day',
+		$redirect = 'node/add/projekt'
+	
+	);
+	return $url;
+
+}
