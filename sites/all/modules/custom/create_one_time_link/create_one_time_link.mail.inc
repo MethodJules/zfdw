@@ -1,0 +1,80 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: julien
+ * Date: 19.10.18
+ * Time: 11:37
+ */
+
+function create_one_time_link_email($email_link_id) {
+
+    //dsm($email_link_id);
+    //get email address
+    if(db_table_exists('create_one_time_link_emails')) {
+        $result = db_select('create_one_time_link_emails', 'emails')
+            ->fields('emails')
+            ->condition('link_email_id', $email_link_id, '=')
+            ->execute()
+            ->fetchAll();
+    } else {
+        drupal_set_message("The table 'create_one_time_link_emails' does not exist, please reinstall the module");
+
+    }
+
+    foreach ($result as $row) {
+        $email = $row->email;
+
+        $emailSalutation = "<p>Sehr geehrte(r) " . $row->salutation . ($row->title='' ? "": " " .$row->title ) . " ". $row->firstname . " " . $row->surname . "</p>";
+
+        $emailBody = $emailSalutation . "<p>für das im Aufbau befindliche Zentrum für Digitalen Wandel (ZfDW) an der Universität Hildesheim 
+                                            ermitteln wir Projekte, die einen Bezug zum Thema Digitalisierung aufweisen. Wir möchten Sie daher bitten ihre Projekte
+                                            in unserem Portal anzulegen.</p>" .
+            "<<p>Um ein Projekt anzulegen klicken Sie bitte auf diesen Link: " . $row->link ."</p>"
+            . "<p>Bei Fragen steht Ihnen das Team (Martina Baucom, Mario Datts und Wilfried Hehr) für das Portal des Zentrums für digitalen Wandel gerne zur Verfügung </p>";
+        $emailSubject = "Zentrum für digitalen Wandel";
+        $emailFrom = "zfdw-portal@uni-hildesheim.de";
+
+        $params = array(
+            'subject' => $emailSubject,
+            'body' => $emailBody,
+        );
+
+        drupal_mail('create_one_time_link', 'one_time_link', $email, language_default(), $params, $emailFrom);
+        drupal_set_message("Mail wurde versendet!");
+
+        db_update('create_one_time_link_emails')
+            ->fields(array(
+                'email_sent' => 'yes',
+            ))
+            ->condition('link_email_id', $email_link_id, '=')
+            ->execute();
+
+    }
+
+    drupal_goto('one_time_link/create');
+
+
+
+    //$email = "hoferj@uni-hildesheim.de"; //TODO parameterisieruen
+
+
+}
+
+function create_one_time_link_mail($key, &$message, $params) {
+    switch ($key) {
+        case 'one_time_link':
+            $headers = array(
+                'MIME-Version' => '1.0',
+                'Content-Type' => 'text/html; charset=UTF-8; format=flowed',
+                'Content-Transfer-Encoding' => '8Bit',
+                'X-Mailer' => 'Drupal'
+            );
+
+            foreach ($headers as $key => $value) {
+                $message['headers'][$key] = $value;
+            }
+            $message['subject'] = $params['subject'];
+            $message['body'] = array(0 => t($params['body']));
+            break;
+    }
+}
