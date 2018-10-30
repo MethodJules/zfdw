@@ -29,8 +29,14 @@ function create_one_time_link_email($email_link_id) {
         $emailBody = $emailSalutation . "<p>für das im Aufbau befindliche Zentrum für Digitalen Wandel (ZfDW) an der Universität Hildesheim 
                                             ermitteln wir Projekte, die einen Bezug zum Thema Digitalisierung aufweisen. Wir möchten Sie daher bitten ihre Projekte
                                             in unserem Portal anzulegen.</p>" .
-            "<<p>Um ein Projekt anzulegen klicken Sie bitte auf diesen Link: " . $row->link ."</p>"
-            . "<p>Bei Fragen steht Ihnen das Team (Martina Baucom, Mario Datts und Wilfried Hehr) für das Portal des Zentrums für digitalen Wandel gerne zur Verfügung </p>";
+                                        "<p>Um ein Projekt anzulegen klicken Sie bitte auf diesen Link: " . $row->link ."</p>"
+                                        ."<p>Bei inhaltlichen Fragen steht Ihnen das Team (".
+                                            "<a href='mailto:baucom@uni-hildesheim.de'>Martina Baucom</a>" .
+                                             ", " . "<a href='mailto:mario.datts@uni-hildesheim.de'>Mario Datts</a>"
+                                               . "und " . "<a href='mailto:hehrwil@uni-hildesheim.de'>Wilfried Hehr</a>"
+
+                                             .") für das Portal des Zentrums für digitalen Wandel gerne zur Verfügung </p>"
+                                            . "<p>Bei technischen Problemen oder Anregungen wenden Sie sich bitte an <a href='mailto:hoferj@uni-hildesheim.de'>Julien Hofer</a></p>";
         $emailSubject = "Zentrum für digitalen Wandel";
         $emailFrom = "zfdw-portal@uni-hildesheim.de";
 
