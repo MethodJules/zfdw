@@ -33,11 +33,11 @@ function indekonews_get_description($nid) {
     //Wenn der Node ein Projekt ist
     } else if(!strcmp($node2->type, "projekt")) {
         $description = "";
-        $result = db_query("SELECT * FROM {field_data_field_kurzbeschreibung} as body WHERE body.entity_id = :nid;",
+        $result = db_query("SELECT * FROM {field_data_body} as body WHERE body.entity_id = :nid;",
             array(":nid" => $nid));
 
         foreach($result as $r) {
-            $description = $r->field_kurzbeschreibung_value;
+            $description = $r->body_value;
         }
 
         //Falls keine Beschreibung vorhanden ist, soll ein Standardtext erzeugt werden.
