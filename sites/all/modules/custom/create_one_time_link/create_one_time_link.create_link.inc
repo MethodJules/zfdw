@@ -6,7 +6,26 @@
  * Time: 11:36
  */
 
-function create_one_time_link_create_link($user_name) {
+function create_one_time_link_create_link($user_name, $project) {
+    //Get project name
+    $project_titles = _get_titles_from_projects();
+    $project_title = $project_titles[$project]; //TODO refactor variable name project
+
+
+    //Get nid of proejct name
+
+    $result = db_select('node', 'n')
+        ->fields('n', array('nid'))
+        ->condition('type', 'projekt')
+        ->condition('title', $project_title)
+        ->execute()
+        ->fetchAssoc();
+
+    $nid = $result['nid'];
+
+
+
+
     //TODO get uid of user-name
 
     $timestamp = REQUEST_TIME;
@@ -25,7 +44,11 @@ function create_one_time_link_create_link($user_name) {
     //dsm('Account:');
     //dsm($account);
 
-    $redirect = 'projekt';
+    if(is_null($nid)){
+        $redirect = 'projekt';
+    } else {
+        $redirect = 'projekt_' . $nid;
+    }
     $options = array('absolute' => TRUE);
 
 
