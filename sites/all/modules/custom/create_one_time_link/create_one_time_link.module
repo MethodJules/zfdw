@@ -5,6 +5,8 @@ module_load_include('inc', 'create_one_time_link', 'create_one_time_link.form');
 module_load_include('inc', 'create_one_time_link', 'create_one_time_link.create_link');
 //Mail Handler
 module_load_include('inc', 'create_one_time_link', 'create_one_time_link.mail');
+//Helper
+module_load_include('inc', 'create_one_time_link', 'create_one_time_link.helper');
 
 
 

@@ -59,16 +59,7 @@ function form_create_one_time_link_create_link($form, &$form_state) {
     return $form;
 }
 
-function form_create_one_time_link_create_email_body($form, &$form_state) {
-    $form['email_body'] = array(
-        '#type' => 'textarea',
-        '#description' => t('You can enter here the email message.'),
-        '#default_value' => "Sehr geehrte Damen und Herren...",
 
-    );
-
-    return $form;
-}
 
 
 function form_create_one_time_link_create_link_validate($form, &$form_state) {
@@ -84,7 +75,6 @@ function form_create_one_time_link_create_link_validate($form, &$form_state) {
 
 function form_create_one_time_link_create_link_submit($form, &$form_state) {
 
-    //dsm($form_state);
     $salutation = $form_state['values']['salutation'];
     $title = $form_state['values']['title'];
     $firstname = $form_state['values'] ['firstname'];
@@ -96,9 +86,12 @@ function form_create_one_time_link_create_link_submit($form, &$form_state) {
     $user_name = _create_dummy_user();
 
 
+
+
+
     variable_set('create_one_time_link_email_body', $form_state['values']['email_body']);
     //dsm($email);
-    $link = create_one_time_link_create_link($user_name);
+    $link = create_one_time_link_create_link($user_name, $project);
     $email_sent = 'no';
     //dsm('Email: ' . $email . ' Link: ' . $link . ' Email Sent: ' . $email_sent );
     if(db_table_exists('create_one_time_link_emails')){
@@ -120,22 +113,12 @@ function form_create_one_time_link_create_link_submit($form, &$form_state) {
 }
 
 
-function _get_titles_from_projects() {
-    $titles = db_select("node", "n")
-        ->fields("n", array('title'))
-        ->condition('type', 'projekt')
-        ->condition('status', 1)
-        ->orderBy('created', 'ASC')
-        ->execute()->fetchCol();
 
-    return $titles;
-}
 
 function _create_dummy_user() {
     $password = user_password(8);
     $user_anonym_nr = variable_get('user_anonym_nr') + 1;
     variable_set('user_anonym_nr', $user_anonym_nr);
-    //dsm($user_anonym_nr);
 
     //set up user fields
     $fields = array(

@@ -13,9 +13,8 @@ function create_one_time_link_page() {
 
     $table = create_one_time_link_create_table();
     $form_email_links = drupal_get_form('form_create_one_time_link_create_link');
-    $form_email_body = drupal_get_form('form_create_one_time_link_create_email_body');
 
-    return drupal_render($form_email_body) . drupal_render($form_email_links) . $table;
+    return  $table . drupal_render($form_email_links);
 
 }
 
@@ -31,10 +30,11 @@ function create_one_time_link_create_table() {
 
     }
 
-    //dsm($result);
 
 
     $header = array('Salutatuion', 'Title', 'First Name', 'Surname' , 'Projekt', 'Email', 'Link', 'Email Sent', 'Action');
+
+
 
     $rows = array();
     foreach ($result as $result_row) {
@@ -43,7 +43,7 @@ function create_one_time_link_create_table() {
           'Title' => $result_row->title,
           'First Name' => $result_row->firstname,
           'Surname' => $result_row->surname,
-          'Projekt' => $result_row->projekt,
+          'Projekt' => _get_title_from_project($result_row->project),
           'Email' => $result_row->email,
           'Link' => $result_row->link,
           'Email Sent' => $result_row->email_sent,
@@ -54,9 +54,8 @@ function create_one_time_link_create_table() {
         array_push($rows, $row);
     }
 
-    $flag = "<a href='#'>" . t("Send Email") . "</a>";
 
-    //$rows = array(array('hoferj@uni-hildesheim.de', 'Link1', $flag), array('hoferj@uni-hildesheim.de', 'Link1', $flag));
+
 
     $table = theme('table', array('header' => $header, 'rows' => $rows));
 
