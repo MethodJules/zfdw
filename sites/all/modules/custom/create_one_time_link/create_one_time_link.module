@@ -28,8 +28,10 @@ $items['one_time_link/create'] = array(
 
     $items['one_time_link/send_email/%'] = array(
         'page callback' => 'create_one_time_link_email',
+        'access callback' => 'create_one_time_link_user_has_role',
+        'access arguments' => array('administrator','Portalprojekt'),
         'page arguments' => array(2),
-        'access arguments' => TRUE,
+        //'access arguments' => TRUE,
         'title' => t('Send Email'),
         'file' => 'create_one_time_link.mail.inc'
 

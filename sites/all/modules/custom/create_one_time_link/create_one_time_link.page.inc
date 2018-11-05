@@ -32,17 +32,14 @@ function create_one_time_link_create_table() {
 
 
 
-    $header = array('Salutatuion', 'Title', 'First Name', 'Surname' , 'Projekt', 'Email', 'Link', 'Email Sent', 'Action');
+    $header = array('Name' , 'Projekt', 'Email', 'Link', 'Email Sent', 'Action');
 
 
 
     $rows = array();
     foreach ($result as $result_row) {
         $row = array(
-           'Salutation' => $result_row->salutation,
-          'Title' => $result_row->title,
-          'First Name' => $result_row->firstname,
-          'Surname' => $result_row->surname,
+          'Name' => $result_row->salutation . '<br/> ' . $result->title . ' ' . $result_row->firstname . ' ' . $result_row->surname,
           'Projekt' => _get_title_from_project($result_row->project),
           'Email' => $result_row->email,
           'Link' => $result_row->link,
