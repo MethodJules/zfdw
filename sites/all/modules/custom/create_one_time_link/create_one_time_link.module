@@ -13,10 +13,13 @@ module_load_include('inc', 'create_one_time_link', 'create_one_time_link.helper'
 function create_one_time_link_menu() {
 
 $items['one_time_link/create'] = array(
+    'title' => t('Invitation Administration'),
+	'type' => MENU_NORMAL_ITEM,
+	'menu_name' => 'main-menu',
 	'page callback' => 'create_one_time_link_page',
 	//'page arguments' => array('form_create_link'),
-	'access arguments' => TRUE,
-	'title' => t('Create One Time Link'),
+	'access callback' => 'create_one_time_link_user_has_role',
+    'access arguments' => array('administrator','Portalprojekt'),
     'file' => 'create_one_time_link.page.inc'
 	
 	
@@ -36,6 +39,17 @@ $items['one_time_link/create'] = array(
 
 return $items;
 
+}
+
+function create_one_time_link_user_has_role() {
+    global $user;
+    $roles = func_get_args();
+    foreach ($roles as $role) {
+        if (in_array($role, $user->roles)) {
+            return TRUE;
+        }
+    }
+    return FALSE;
 }
 
 
