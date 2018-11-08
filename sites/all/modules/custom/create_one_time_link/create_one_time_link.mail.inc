@@ -41,15 +41,15 @@ function create_one_time_link_email($email_link_id) {
                                             Das Anlegen und Bearbeiten von Einträgen erfolgt dabei vollkommen anonym. </p>"
 
 
-                                        ."<p>Damit wir die Plattform weiter optimieren können, bitten wir Sie, bis zum 15. November 2018 Projekte anzulegen oder zu bearbeiten. 
-                                            Um ein Projekt anzulegen klicken Sie bitte auf diesen Link: " ."<a href='" . $row->link ."'>" . $row->link ."</a></p>"
+                                        ."<p>Sie würden uns sehr helfen, wenn Sie zeitnah - am besten bis zum 15. November - neue Projekte anlegen bzw. vorhandene Projekte bearbeiten könnten. 
+                                            Um ein Projekt anzulegen, klicken Sie bitte auf diesen Link: " ."<a href='" . $row->link ."'>" . $row->link ."</a></p>"
                                         ."<p>Bei inhaltlichen Fragen steht Ihnen das Team (".
                                             "<a href='mailto:baucom@uni-hildesheim.de'>Martina Baucom</a>" .
                                              ", " . "<a href='mailto:mario.datts@uni-hildesheim.de'>Mario Datts</a>"
-                                               . "und " . "<a href='mailto:hehrwil@uni-hildesheim.de'>Wilfried Hehr</a>"
+                                               . " und " . "<a href='mailto:hehrwil@uni-hildesheim.de'>Wilfried Hehr</a>"
 
-                                             .") für das Portal des Zentrums für digitalen Wandel gerne zur Verfügung </p>"
-                                            . "<p>Bei technischen Problemen oder Anregungen wenden Sie sich bitte an <a href='mailto:hoferj@uni-hildesheim.de'>Julien Hofer</a></p>";
+                                             .") für das Portal des Zentrums für digitalen Wandel gerne zur Verfügung. </p>"
+                                            . "<p>Bei technischen Problemen oder Anregungen wenden Sie sich bitte an <a href='mailto:hoferj@uni-hildesheim.de'>Julien Hofer</a>.</p>";
         $emailSubject = "Zentrum für digitalen Wandel";
         $emailFrom = "zfdw-portal@uni-hildesheim.de";
 
