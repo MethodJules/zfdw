@@ -28,8 +28,21 @@ function create_one_time_link_email($email_link_id) {
 
         $emailBody = $emailSalutation . "<p>für das im Aufbau befindliche Zentrum für Digitalen Wandel (ZfDW) an der Universität Hildesheim 
                                             ermitteln wir Projekte, die einen Bezug zum Thema Digitalisierung aufweisen. Wir möchten Sie daher bitten ihre Projekte
-                                            in unserem Portal anzulegen.</p>" .
-                                        "<p>Um ein Projekt anzulegen klicken Sie bitte auf diesen Link: " . $row->link ."</p>"
+                                            in unserem Portal anzulegen, um eine interne und regionale, nationale und internationale Vernetzung der Forschenden zu unterstützen.</p>"
+
+                                          ."<p>Damit wir Ihnen ein umfangreiches Angebot an Vernetzungspotential bieten können, brauchen wir Ihre Hilfe. 
+                                            Forschen, lehren oder publizieren Sie mit Bezug zum Thema Digitalisierung? 
+                                            Dann möchten wir gerne mehr darüber erfahren und die Projekte in unser Portal aufnehmen. 
+                                            Ihnen steht dafür ein Onlinefragebogen zur Verfügung. </p>"
+
+                                        ."<p>Der Fragebogen ist zurzeit noch in der Betaphase. Sie könne aber schon Projekte, Publikationen, Abschlussarbeiten und Forschungsergebnisse anlegen. 
+                                            Einige Ihrer Projekte haben wir bereits in die Datenbank eingepflegt. 
+                                            Sie können die Angaben bearbeiten und ergänzen. 
+                                            Das Anlegen und Bearbeiten von Einträgen erfolgt dabei vollkommen anonym. </p>"
+
+
+                                        ."<p>Damit wir die Plattform weiter optimieren können, bitten wir Sie, bis zum 15. November 2018 Projekte anzulegen oder zu bearbeiten. 
+                                            Um ein Projekt anzulegen klicken Sie bitte auf diesen Link: " ."<a href='" . $row->link ."'>" . $row->link ."</a></p>"
                                         ."<p>Bei inhaltlichen Fragen steht Ihnen das Team (".
                                             "<a href='mailto:baucom@uni-hildesheim.de'>Martina Baucom</a>" .
                                              ", " . "<a href='mailto:mario.datts@uni-hildesheim.de'>Mario Datts</a>"
