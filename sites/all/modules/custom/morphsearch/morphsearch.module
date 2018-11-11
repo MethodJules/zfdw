@@ -989,8 +989,10 @@ function morphsearch_apachesolr_index_document_build_node(ApacheSolrDocument $do
           watchdog_exception('type', $e);
       }
       // add taxonomy IDs to solr document index
-      $array_tids = array_unique($array_tids);
-      $document->setField('tid', $array_tids);
+      if (!empty($array_tids)) {
+        $array_tids = array_unique($array_tids);
+        $document->setField('tid', $array_tids);
+      }
     
   } else {
       $array_tids = db_select('taxonomy_index', 'taxonomy_index')
