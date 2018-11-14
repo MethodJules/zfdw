@@ -115,7 +115,7 @@ function bi_visual($vid) {
     $pivot_button = array(
         '#prefix' => '<div id="bi_visual_pivot_button">',
         '#suffix' => '</div>',
-        '#markup' => l(t('Pivot Table ls Generator'), 'taxonomy-pivot'),
+        '#markup' => l(t('Pivot Table Generator'), 'taxonomy-pivot'),
     );
 
     $output .= drupal_render($pivot_button);
