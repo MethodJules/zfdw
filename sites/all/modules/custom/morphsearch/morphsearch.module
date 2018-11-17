@@ -301,11 +301,38 @@ function buildSearchHtml() {
       // add an empty select option for every select box
       $html .= "<option value=''></option>";
 
+      // build select optgroups
+      // TODO refactor function (sql query not needed, taxonomy_get_vocabularies)
+      $tree = taxonomy_get_tree($row->term_vid);
+      $openGrp = FALSE;
+      foreach ($tree as $term) {
+        if ($term->depth == 0) {
+
+          if ($openGrp) {
+            $openGrp = FALSE;
+            $html .= "</optgroup>";
+          }
+
+          if (empty(taxonomy_get_children($term->tid, $row->term_vid))) {
+            $html .= "<option value='$term->tid'>$term->name</option>";
+          } else {
+            // level 1 optgroup
+            $html .= "<optgroup label='$term->name'>";
+            $openGrp = TRUE;
+          }
+
+        } else {
+          // nested optgroups not allowed by definition. Visualize hierarchies of level 2+ using '-'.
+          if ($term->depth > 1) {
+            $html .= "<option value='$term->tid'>" . str_repeat('-', $term->depth) . ' ' . $term->name. "</option>";
+          } else {
+            $html .= "<option value='$term->tid'>$term->name</option>";
+          }
+        }
+      }
+
       $currentLabel = $row->vocabulary_name;
     }
-
-    // add all options to the current select box
-    $html .= "<option value='$row->tid'>$row->term_name</option>";
   }
 
   // close tags after last element
@@ -460,6 +487,44 @@ function morphsearch_menu() {
       'page callback' => 'delete_search',
       'access callback' => 'user_is_logged_in',
   );
+
+  // display morphological box
+  $items['config/morphbox'] = array(
+    'title' => 'Morphological Box',
+    'description' => 'Create a new morphological box dimension.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('morphsearch_get_morphbox'),
+    'access arguments' => array('administer taxonomy'),
+    'file' => 'morphsearch.morphbox.inc',
+  );
+
+  // display morphological box
+  $items['config/morphbox/%'] = array(
+    'title' => 'Morphological Box',
+    'description' => 'Edit an existing morphological box dimension.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('morphsearch_get_morphbox_vid', 2),
+    'access arguments' => array('administer taxonomy'),
+    'file' => 'morphsearch.morphbox.inc',
+  );
+
+  /*$items['config/morphbox/%taxonomy_vocabulary_machine_name'] = array(
+    'title callback' => 'entity_label',
+    'title arguments' => array('taxonomy_vocabulary', 2),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('morphbox_edit_dimension', 3),
+    'access arguments' => array('administer taxonomy'),
+    'file' => 'morphsearch.morphbox.inc',
+  );*/
+
+  /*$items['config/morphbox/%'] = array(
+    'title' => 'Edit Vocabulary',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('morphsearch_ajax_edit_vocabulary', 2),
+    'access arguments' => array('administer taxonomy'),
+    'file' => 'morphsearch.morphbox.inc',
+  );*/
+
 
   return $items;
 }
@@ -886,7 +951,7 @@ function get_associated_search_result_ids($nid, $field) {
  * @param ApacheSolrDocument $document Array of key / value pairs that represent a Solr Document as it will be sent to the Solr Server.
  * @param Object $entity Drupal representation of the node and it#s content.
  */
-function morphsearch_apachesolr_index_document_build_node(ApacheSolrDocument $document, $entity) {
+function morphsearch_apachesolr_index_document_build(ApacheSolrDocument $document, $entity) {
   if ($entity->type === 'biblio') {
     // make fields available for field search (is_year: 2015)
     $document->addField('is_year', $entity->biblio_year);
@@ -929,16 +994,21 @@ function morphsearch_apachesolr_index_document_build_node(ApacheSolrDocument $do
     $array_tids = array();
 
     // get IDs of all associated research results
-    $reference_node_ids = get_associated_search_result_ids($entity->nid, 'publication');
+    if (node_type_load('forschungsergebnis') != FALSE) {
 
-    // get all taxonomy IDs of associated research results
-    foreach ($reference_node_ids as $ref) {
-      $array_tids = array_merge($array_tids, get_taxonomy_ids($ref));
+      $reference_node_ids = get_associated_search_result_ids($entity->nid, 'publication');
+
+      // get all taxonomy IDs of associated research results
+      foreach ($reference_node_ids as $ref) {
+        $array_tids = array_merge($array_tids, get_taxonomy_ids($ref));
+      }
     }
 
     // merge existing publication taxonomy term ids with research result
     $existingTids = $document->getField('tid')['value'];
-    $array_tids = array_merge($array_tids, $existingTids);
+    if ($existingTids !== NULL) {
+      $array_tids = array_merge($array_tids, $existingTids);
+    }
 
     // add taxonomy IDs to solr document index
     $array_tids = array_unique($array_tids);
@@ -969,11 +1039,14 @@ function morphsearch_apachesolr_index_document_build_node(ApacheSolrDocument $do
   // TODO duplicate code
   // add taxonomy IDs of associated research results to projects
   // (projects can be found by morphological terms of associated research results)
-  if ($entity->type === 'projekt' && node_type_load('forschungsergebnis') != FALSE) {
+  if ($entity->type === 'projekt') {
+
+    // add term ids of related research results to project
+    if (node_type_load('forschungsergebnis') != FALSE) {
       $array_tids = array();
 
       // get IDs of all associated research results
-      $reference_node_ids = get_associated_search_result_ids($entity->nid, 'forschungsergebnisse');
+      $reference_node_ids = get_associated_search_result_ids($entity->nid, 'project');
 
       // get all taxonomy IDs of associated research results
       foreach ($reference_node_ids as $ref) {
@@ -981,26 +1054,16 @@ function morphsearch_apachesolr_index_document_build_node(ApacheSolrDocument $do
       }
 
       // merge existing project taxonomy term ids with research result
-      //dsm($document);
       $existingTids = $document->getField('tid')['value'];
-      try {
-        $array_tids = array_merge($array_tids, $existingTids);
-      } catch (Exception $e) {
-          watchdog_exception('type', $e);
-      }
-      // add taxonomy IDs to solr document index
-      if (!empty($array_tids)) {
-        $array_tids = array_unique($array_tids);
-        $document->setField('tid', $array_tids);
-      }
-    
-  } else {
-      $array_tids = db_select('taxonomy_index', 'taxonomy_index')
-        ->fields('taxonomy_index', array('tid', 'tid'))
-        ->condition('nid', $entity->nid)
-        ->execute()->fetchAllKeyed();
 
+      if ($existingTids !== NULL) {
+        $array_tids = array_merge($array_tids, $existingTids);
+      }
+
+      // add taxonomy IDs to solr document index
+      $array_tids = array_unique($array_tids);
       $document->setField('tid', $array_tids);
+    }
   }
 }
 
