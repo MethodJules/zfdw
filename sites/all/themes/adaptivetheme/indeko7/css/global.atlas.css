@@ -591,6 +591,13 @@ img[src*="Logo_PT_DLR_deutsch_neu.jpg"] {
     padding-right: 0;
 }
 
+/* Uniform width for all select lists in the block */
+#views-exposed-form-research-map-research .chosen-processed,
+#views-exposed-form-research-map-research .views-exposed-widget{
+    min-width: 100% !important;
+    width: 100% !important;
+}
+
 /* Fix IP Geolocation Views & Maps to point marker icon tip at geo location instead of icon center.
  * Has to be adjusted if own custom marcer icons are used */
 .leaflet-tagged-marker > .leaflet-marker-icon {

@@ -25,13 +25,23 @@ function map_filters_views_pre_view(&$view, &$display_id, &$args) {
     // Get existing view filters
     $filters = $view->display_handler->get_option('filters');
 
-    // Add all morphological box vocabularies as exposed filters
-    foreach ($result as $vocabulary) {
+    // Get the central content type of the view
+    $contentType = reset($view->display['map_research']->display_options['filters']['type']['value']);
 
+    // Get all taxonomy reference fields and associated vocabularies of the content type
+    $fieldInfo = field_info_instances(node, $contentType);
+    foreach ($fieldInfo as $fieldName => $field) {
+      $fieldIdInfo = field_info_field_by_id($field['field_id']);
+      $fieldInfo[$fieldName] = $fieldIdInfo['settings']['allowed_values'][0]['vocabulary'];
+    }
+
+    // Add all morphological box vocabularies as exposed filters
+    // TODO filter by terms of associated project, too?
+    foreach ($result as $vocabulary) {
       $vocMachineName = $vocabulary->vocabulary_machinename;
       $vocLabel = $vocabulary->vocabulary_name;
 
-      if (empty($filters[$vocMachineName])) {
+      if (empty($filters[$vocMachineName]) && in_array($vocMachineName, $fieldInfo)) {
         // There is no vid filter so we have to add it
         $view->add_item(
           $view->current_display,
@@ -121,7 +131,7 @@ function map_filters_leaflet_map_prebuild_alter(&$settings) {
  * Compute coordinates of projects and their associated partners to connect them by lines on leaflet maps.
  */
 function map_filters_views_post_execute(&$view) {
-  if ($view->name === 'Maps' && $view->current_display === 'page') {
+  if ($view->name === 'research' && $view->current_display === 'page') {
 
     $projects = array();
     $projectPartners = array();
