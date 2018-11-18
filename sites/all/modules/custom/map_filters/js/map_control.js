@@ -113,9 +113,23 @@
 
             // Add legend to map.
             legend.onAdd = function (map) {
-              return divLegend;
+              if ($('.map.legend').length === 0) {
+                return divLegend;
+              }
             };
-            legend.addTo(lMap);
+
+            // Display legend only if it's associated overlay is active.
+            lMap.on('overlayadd', function(eo) {
+              if (eo.name === layerName) {
+                legend.addTo(lMap);
+              }
+            });
+
+            lMap.on('overlayremove', function(eo) {
+              if (eo.name === layerName) {
+                legend.removeFrom(lMap);
+              }
+            });
 
             // Clear settings. AJAX updates would not update them otherwise.
             Drupal.settings.map_filters.polylinesData = [];
