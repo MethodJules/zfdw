@@ -49,40 +49,80 @@
                 }
             });
 
-            // Add overlay of connecting lines between projects and partners
-            var polylineConfig = {
-                //If false, the layer will not emit mouse events and will act as a part of the underlying map.
-                interactive: false,
-                // How much to simplify the polyline on each zoom level. More means better performance and smoother look, and less means more accurate representation.
-                smoothFactor: 1.0,
-                // Disable polyline clipping.
-                noClip: false,
-                // Whether to draw stroke along the path. Set it to false to disable borders on polygons or circles.
-                stroke: true,
-                // Stroke color
-                color: '#3388ff',
-                // Stroke width in pixels
-                weight: 3,
-                // Stroke opacity
-                opacity: 0.8,
-                // A string that defines shape to be used at the end of the stroke.
-                lineCap: 'round',
-                // A string that defines shape to be used at the corners of the stroke.
-                lineJoin: 'round',
-                dashArray: null,
-                dashOffset: null,
+          // Add overlay of connecting lines between project's institutions.
+          // Set line options.
+          var polylineConfig = {
+            //If false, the layer will not emit mouse events and will act as a part of the underlying map.
+            interactive: false,
+            // How much to simplify the polyline on each zoom level. More means better performance and smoother look, and less means more accurate representation.
+            smoothFactor: 1.0,
+            // Disable polyline clipping.
+            noClip: false,
+            // Whether to draw stroke along the path. Set it to false to disable borders on polygons or circles.
+            stroke: true,
+            // Stroke color
+            color: '#3388ff',
+            // Stroke width in pixels
+            weight: 5,
+            // Stroke opacity
+            opacity: 0.70,
+            // A string that defines shape to be used at the end of the stroke.
+            lineCap: 'round',
+            // A string that defines shape to be used at the corners of the stroke.
+            lineJoin: 'round',
+            dashArray: null,
+            dashOffset: null
+          };
 
-            };
+          var polylinesData = settings.map_filters.polylinesData;   // All lines between locations.
+          var topPolylines = settings.map_filters.topPolylines;     // Lines with popups on top of everything else.
+          var polylineGroup = L.layerGroup();                       // Group of all line elements of the map.
+          var legend = L.control({position: 'bottomright'});        // Map legend.
 
-            var polylinesData = settings.map_filters.polylinesData;
-            if (polylinesData && layerControl) {
-                multiPolyline = L.multiPolyline(settings.map_filters.polylinesData, polylineConfig);
-                Drupal.settings.map_filters.polylinesData = [];
-                layerControl.addOverlay(multiPolyline, 'Verbindungen'); // TODO generalize
-            } else {
-                $(".leaflet-control-layers-overlays span:contains('Verbindungen')").parent().hide();
+          // Build the layer of connections between locations (if there are any).
+          if (polylinesData) {
+
+            // Add connecting lines between locations for every project
+            var i;
+            var divLegend = L.DomUtil.create('div', 'map legend');
+            var divProject = '';
+            for (i = 0; i < polylinesData.length; i++) {
+              polylineConfig.color = settings.map_filters.polylinesData[i]['color'];
+              var multiPolyline = L.multiPolyline(settings.map_filters.polylinesData[i]['polyline'], polylineConfig);
+              polylineGroup.addLayer(multiPolyline);
+              divProject = '<div class="project title">' + settings.map_filters.polylinesData[i]['project'] + '</div>';
+              divLegend.innerHTML += '<i style="background:' + polylineConfig.color + '"></i>' + divProject
             }
 
+            // Add another set of invisible lines on top and add popup events.
+            if (topPolylines) {
+              for (i = 0; i < topPolylines.length; i++) {
+                var polylines = L.polyline(settings.map_filters.topPolylines[i]['polyline'],
+                  {opacity: 0, weight:6});
+                polylines.bindPopup(settings.map_filters.topPolylines[i]['projects'],
+                  {className:'mapPopup', maxWidth:'700'});
+                polylineGroup.addLayer(polylines);
+              }
+            }
+
+            // Add layer to map.
+            var layerName = Drupal.t('Verbindungen');
+            if (layerControl != null) {
+              layerControl.addOverlay(polylineGroup, layerName);
+            }
+
+            // Add legend to map.
+            legend.onAdd = function (map) {
+              return divLegend;
+            };
+            legend.addTo(lMap);
+
+            // Clear settings. AJAX updates would not update them otherwise.
+            Drupal.settings.map_filters.polylinesData = [];
+            Drupal.settings.map_filters.topPolylines = [];
+          } else {
+              $(".leaflet-control-layers-overlays span:contains(' . $layerName . ')").parent().hide();
+          }
         }
     };
 })(jQuery, Drupal);

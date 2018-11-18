@@ -603,3 +603,24 @@ img[src*="Logo_PT_DLR_deutsch_neu.jpg"] {
 .leaflet-tagged-marker > .leaflet-marker-icon {
     margin-top: -42px !important;
 }
+
+/* Style map legend */
+.map.legend {
+    width: 17em;
+    background: rgba(255,255,255,0.85);
+    border-radius: 5px;
+    padding: 6px;
+
+}
+.map.legend i {
+    width: 18px;
+    height: 18px;
+    float: left;
+    margin-right: 8px;
+}
+
+.map.legend .project.title {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
