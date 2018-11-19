@@ -1046,7 +1046,7 @@ function morphsearch_apachesolr_index_document_build(ApacheSolrDocument $documen
       $array_tids = array();
 
       // get IDs of all associated research results
-      $reference_node_ids = get_associated_search_result_ids($entity->nid, 'project');
+      $reference_node_ids = get_associated_search_result_ids($entity->nid, 'publication');
 
       // get all taxonomy IDs of associated research results
       foreach ($reference_node_ids as $ref) {
