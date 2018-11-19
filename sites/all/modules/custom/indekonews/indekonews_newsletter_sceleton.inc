@@ -58,7 +58,7 @@ w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 											    text-align: left;
 												background: #e7e7e7;"
 											    mc:edit="preheader_content00">
-                                                Es gibt Neuigkeiten auf x.Navi.de! Hier kommt der aktuelle Newsletter.
+                                                Es gibt Neuigkeiten auf zentrum-für-digitalen-wandel.de! Hier kommt der aktuelle Newsletter.
                                             </td>
                                             <td valign="top" width="180" class="preheaderContent" style="
 										        color:#666666;
@@ -148,7 +148,7 @@ w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
                                                         liebe Interessierte des Zentrums für Digitalen Wandel
 												        : das neue News.Navi ist da.<br>
                                                         Vermissen Sie wichtige Themen oder haben Sie Anregungen oder Wünsche
-												        zur Gestaltung von News.Navi? Dann senden Sie uns eine E-Mail an
+												        zur Gestaltung des Newsletters? Dann senden Sie uns eine E-Mail an
 												        ZfDW@uni-hildesheim.de.
 												</h3>
                                             </td>

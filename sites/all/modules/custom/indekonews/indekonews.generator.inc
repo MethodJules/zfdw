@@ -47,13 +47,13 @@ function newsletter_generator($form, &$form_submit) {
                 $form['dimensionCheckBox'] = array(
                     '#type' => 'checkbox',
                     '#default_value' => 1,
-                    '#title' => t('dimension'),
+                    '#title' => t('Dimension'),
                 );
             } else {
                 $form['dimensionCheckBox'] = array(
                     '#type' => 'checkbox',
                     '#default_value' => 0,
-                    '#title' => t('dimension'),
+                    '#title' => t('Dimension'),
                 );
             }
 
@@ -61,13 +61,13 @@ function newsletter_generator($form, &$form_submit) {
                 $form['taxonomyCheckBox'] = array(
                     '#type' => 'checkbox',
                     '#default_value' => 1,
-                    '#title' => t('factor'),
+                    '#title' => t('Ausprägung'),
                 );
             } else {
                 $form['taxonomyCheckBox'] = array(
                     '#type' => 'checkbox',
                     '#default_value' => 0,
-                    '#title' => t('factor'),
+                    '#title' => t('Ausprägung'),
                 );
             }
 
