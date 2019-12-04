@@ -9,7 +9,7 @@
 variable_set('participationContentType', 'event');
 
 // is the participant a 'user' or a 'group'?
-variable_set('participationLevel', 'group');
+variable_set('participationLevel', 'user');
 
 // settings for the original interestedGroups functionality
 // with events and participating projects:
